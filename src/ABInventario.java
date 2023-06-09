@@ -10,6 +10,29 @@ public class ABInventario extends JFrame {
     private JPanel facturaVentaPanel;
     private JPanel detalleFacturaPanel;
     private JPanel informePanel;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JButton agregarButton;
+    private JButton editarButton;
+    private JButton eliminarButton;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JTextField textField6;
+    private JButton agregarButton1;
+    private JButton editarButton1;
+    private JButton eliminarButton1;
+    private JTextField textField7;
+    private JTextField textField8;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JComboBox comboBox3;
+    private JComboBox comboBox4;
+    private JComboBox comboBox5;
+    private JComboBox comboBox6;
+    private JButton agregarButton2;
+    private JButton editarButton2;
+    private JButton deleteButton;
 
     public ABInventario() {
         super("Inventario");
