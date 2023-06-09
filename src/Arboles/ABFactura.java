@@ -22,7 +22,6 @@ public class ABFactura {
             nodo = new NodoFactura(idFactura, fechaFactura, horaFactura);
             return nodo;
         }
-
         if (idFactura < nodo.idFactura) {
             nodo.hijoIzquierdo = insertarRecursivo(nodo.hijoIzquierdo, idFactura, fechaFactura, horaFactura);
         } else if (idFactura > nodo.idFactura) {

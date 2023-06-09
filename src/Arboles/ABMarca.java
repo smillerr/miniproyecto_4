@@ -21,7 +21,10 @@ public class ABMarca {
             nodo = new NodoMarca(nombreMarca, idMarca);
             return nodo;
         }
-
+        if(idMarca == nodo.idMarca){
+            System.out.println("Lo sentimos, ya existe una marca con el id" + idMarca);
+            return nodo;
+        }
         if (idMarca < nodo.idMarca) {
             nodo.hijoIzquierdo = insertarRecursivo(nodo.hijoIzquierdo, nombreMarca, idMarca);
         } else if (idMarca > nodo.idMarca) {

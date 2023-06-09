@@ -44,10 +44,13 @@ public class ABInventario extends JFrame {
         arbolTest.insertar("Adidas" , 2);
         arbolTest.insertar("Puma" , 3);
         arbolTest.insertar("Gucci" , 4);
+        arbolTest.insertar("Sephora", 2);
 
         System.out.println(arbolTest.buscar(3));
         String result = arbolTest.eliminar(15);
         if(result.equals("")) System.out.println("Lo sentimos, estas tratando de eliminar algo que no existe");
         System.out.println(arbolTest.eliminar(7));
+        System.out.println(arbolTest.buscar(2));
+        System.out.println(arbolTest.buscar(3));
     }
 }

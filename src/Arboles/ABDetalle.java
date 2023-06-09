@@ -16,13 +16,26 @@ public class ABDetalle {
     public void insertar(int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         raiz = insertarRecursivo(raiz, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
     }
-
+    /**
+     * El metodo insertar recursivo tiene como parametros el nodo a instertar, el id de la factura, el id del detalle de la factura, la cantidad de productos, el valor de cada producto
+     *
+     * Tiene 4 posibles casos:
+     *
+     * 1) En caso tal de que el nodo sea el primero en agregar, lo pone como la raiz del arbol
+     * 2) En caso de que se intente agregar un nodo que ya exista, ya que el id es unico, se retorna el nodo que se habia creado con ese id, es decir, el nodo antiguo
+     * 3) En caso tal de que el id sea menor al que ya está, entonces se añade como el hijo izquierdo
+     * 4) En caso tal de que el id sea mayor al que ya está, se añade como el hijo derecho
+     *
+     * Esto para asegurar que no se pueda insertar un detalle de factura con un id que ya exista, es decir, se asegura la exclusividad
+     * **/
     private NodoDetalle insertarRecursivo(NodoDetalle nodo, int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         if (nodo == null) {
             nodo = new NodoDetalle(idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
             return nodo;
         }
-
+        if(idDetalle == nodo.idDetalle){
+            return nodo;
+        }
         if (idDetalle < nodo.idDetalle) {
             nodo.hijoIzquierdo = insertarRecursivo(nodo.hijoIzquierdo, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
         } else if (idDetalle > nodo.idDetalle) {
