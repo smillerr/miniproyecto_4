@@ -113,6 +113,12 @@ public class ABInventario extends JFrame {
                 agregarRegistro();
             }
         });
+        editarMarcaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarRegistro();
+            }
+        });
     }
 
     public void agregarRegistro(){
@@ -201,6 +207,112 @@ public class ABInventario extends JFrame {
                     int newFactura = idFromText(selectedFactura);
                     int newProducto = idFromText(selectedProducto);
                    arbolDetalles.insertar(newFactura, Integer.parseInt(detalle), newProducto, Integer.parseInt(cantidad), Integer.parseInt(price));
+                }
+                else return;
+                limpiarUIDetalle();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+    }
+
+    public void editarRegistro(){
+        int registro = whichRegistro(tabbedPane1.getSelectedIndex());
+
+        if(registro==0){
+            if(!marcaNombre.getText().equals("") && !marcaId.getText().equals("")){
+                String newNombre = marcaNombre.getText();
+                String marcaEditar = marcaId.getText();
+                if(codeIsNumber(marcaEditar)){
+                    String searchResult;
+                    searchResult = arbolMarcas.editar(newNombre, Integer.parseInt(marcaEditar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando editar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else{
+                    return;
+                }
+                //Limpiamos la UI
+                limpiarUIMarca();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==1){
+            if(descProducto.getText()!="" && productoId.getText()!="" && comboBoxMarcas.getSelectedIndex()!=0){
+                String newDescProd = descProducto.getText();
+                String prodIdEditar = productoId.getText();
+                if(codeIsNumber(prodIdEditar)){
+                    int selectedIndex = comboBoxMarcas.getSelectedIndex();
+                    // Retrieve the selected item
+                    String selectedText = (String) comboBoxMarcas.getItemAt(selectedIndex);
+                    int idNewMarca = idFromText(selectedText);
+                    String searchResult;
+                    searchResult = arbolProductos.editar(newDescProd, Integer.parseInt(prodIdEditar), idNewMarca);
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando editar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else return;
+                limpiarUIProd();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==2){
+            if(!facturaId.getText().equals("")){
+                String facturaAgregar = facturaId.getText();
+                if(codeIsNumber(facturaAgregar)){
+                    //Capturamos la fecha que indico el usuario
+                    int selectedMesIndex = mesComboBox.getSelectedIndex();
+                    int selectedDiaIndex = diaComboBox.getSelectedIndex();
+                    int selectedYearIndex = yearComboBox.getSelectedIndex();
+                    // Devolvemos el contenido de los items seleccionados
+                    String selectedMes = (String) mesComboBox.getItemAt(selectedMesIndex);
+                    String selectedDia = (String) diaComboBox.getItemAt(selectedDiaIndex);
+                    String selectedYear = (String) yearComboBox.getItemAt(selectedYearIndex);
+                    //Capturamos la hora seleccionada por el usuario
+                    int selectedHoraIndex = horaComboBox.getSelectedIndex();
+                    int selectedMintuoIndex = minutoComboBox.getSelectedIndex();
+                    //Devolvemos el contenido de los items seleccionados
+                    String selectedHora = (String) horaComboBox.getItemAt(selectedHoraIndex);
+                    String selectedMinuto = (String) minutoComboBox.getItemAt(selectedMintuoIndex);
+                    LocalDate fechaAgregar = LocalDate.of(Integer.parseInt(selectedYear), Integer.parseInt(selectedMes), Integer.parseInt(selectedDia));
+                    LocalTime horaAgregar = LocalTime.of(Integer.parseInt(selectedHora), Integer.parseInt(selectedMinuto));
+
+                    arbolFacturas.insertar(Integer.parseInt(facturaAgregar), fechaAgregar, horaAgregar);
+                }
+                else return;
+                comboBoxFacturas.addItem("Factura con id:" + Integer.parseInt(facturaAgregar));
+                limpiarUIFact();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==3){
+            if(comboBoxFacturas.getSelectedIndex()!=0 && comboBoxProductos.getSelectedIndex()!=0 && !undText.equals("") && !priceText.equals("")){
+                String cantidad = undText.getText();
+                String price = priceText.getText();
+                String detalle = detalleId.getText();
+                if(codeIsNumber(cantidad) && codeIsNumber(price) && codeIsNumber(detalle)){
+                    int productoIndex = comboBoxProductos.getSelectedIndex();
+                    int facturaIndex = comboBoxFacturas.getSelectedIndex();
+                    String selectedProducto = (String) comboBoxProductos.getItemAt(productoIndex);
+                    String selectedFactura = (String) comboBoxFacturas.getItemAt(facturaIndex);
+                    int newFactura = idFromText(selectedFactura);
+                    int newProducto = idFromText(selectedProducto);
+                    arbolDetalles.insertar(newFactura, Integer.parseInt(detalle), newProducto, Integer.parseInt(cantidad), Integer.parseInt(price));
                 }
                 else return;
                 limpiarUIDetalle();
