@@ -36,6 +36,7 @@ public class ABInventario extends JFrame {
     private JComboBox comboBox6;
     private JButton agregarButton2;
     private JButton editarButton2;
+<<<<<<< Updated upstream
     private JButton deleteButton;
     private JComboBox comboBoxMarcas;
     private JTextArea marcaTextArea;
@@ -48,6 +49,22 @@ public class ABInventario extends JFrame {
     int productoIndex = 1;
     int facturaIndex = 2;
     int detalleIndex = 3;
+=======
+    private JButton eliminarButton3;
+    private JTextField textField9;
+    private JTextField textField10;
+    private JTextField textField11;
+    private JTextField textField12;
+    private JTextField textField13;
+    private JTextField textField14;
+    private JButton añadirButton;
+    private JButton editarButton3;
+    private JButton eliminarButton2;
+    private JTextField textField15;
+    private JComboBox comboBox7;
+    private JButton mostrarDatosDeLasButton;
+    private JTable table1;
+>>>>>>> Stashed changes
 
     public ABInventario() {
         super("Inventario");
