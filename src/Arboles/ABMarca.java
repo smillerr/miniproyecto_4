@@ -3,10 +3,11 @@ package Arboles;
 import Nodos.NodoMarca;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ABMarca {
     NodoMarca raiz;
-
+    JTextArea ta;
 
     public ABMarca() {
         raiz = null;
@@ -127,14 +128,14 @@ public class ABMarca {
     }
 
     public void imprimirEnOrden(JTextArea ta) {
-        //this.ta = ta;
+        this.ta = ta;
         imprimirEnOrdenRecursivo(raiz);
     }
 
     private void imprimirEnOrdenRecursivo(NodoMarca nodo) {
         if (nodo != null) {
             imprimirEnOrdenRecursivo(nodo.hijoIzquierdo);
-            //ta.append(nodo.nombreMarca + " - " + nodo.idMarca + "\n");
+            ta.append(nodo.nombreMarca + " - " + nodo.idMarca + "\n");
             imprimirEnOrdenRecursivo(nodo.hijoDerecho);
         }
     }
