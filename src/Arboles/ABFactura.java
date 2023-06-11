@@ -125,16 +125,16 @@ public class ABFactura {
         return nodo;
     }
 
-    public void imprimirEnOrden(JTextArea ta) {
+    public void imprimirEnOrden(JTextArea ta, LocalDate fechaDeseada) {
         //this.ta = ta;
-        imprimirEnOrdenRecursivo(raiz);
+        imprimirEnOrdenRecursivo(raiz, fechaDeseada);
     }
 
-    private void imprimirEnOrdenRecursivo(NodoFactura nodo) {
-        if (nodo != null) {
-            imprimirEnOrdenRecursivo(nodo.hijoIzquierdo);
-            //ta.append(nodo.nombreMarca + " - " + nodo.idMarca + "\n");
-            imprimirEnOrdenRecursivo(nodo.hijoDerecho);
+    private void imprimirEnOrdenRecursivo(NodoFactura nodo , LocalDate fechaDeseada) {
+        if (nodo != null && fechaDeseada.getMonth()==nodo.fechaFactura.getMonth()) {
+            imprimirEnOrdenRecursivo(nodo.hijoIzquierdo, fechaDeseada);
+            System.out.println("Facturas del mes: " + nodo.idFactura + nodo.horaFactura + nodo.fechaFactura);
+            imprimirEnOrdenRecursivo(nodo.hijoDerecho, fechaDeseada);
         }
     }
 
