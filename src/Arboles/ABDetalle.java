@@ -82,6 +82,25 @@ public class ABDetalle {
             return buscarPrecioRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    public NodoDetalle buscarDetallePorFactura(int idFactura) {
+
+        return buscarDetallePorFacturaRecursivo(raiz, idFactura);
+    }
+
+    private NodoDetalle buscarDetallePorFacturaRecursivo(NodoDetalle nodo, int idFactura) {
+        if (nodo == null) {
+            return null;
+        }
+
+
+        if (idFactura==nodo.idFactura) {
+            return nodo;
+        } else if (idFactura < nodo.idFactura) {
+            return buscarDetallePorFacturaRecursivo(nodo.hijoIzquierdo, idFactura);
+        } else {
+            return buscarDetallePorFacturaRecursivo(nodo.hijoDerecho, idFactura);
+        }
+    }
     public String editar(int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         raiz = editarRecursivo(raiz, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
         String buscarNodo = buscar(idDetalle);

@@ -2,6 +2,10 @@ import Arboles.ABDetalle;
 import Arboles.ABFactura;
 import Arboles.ABMarca;
 import Arboles.ABProducto;
+import Nodos.NodoDetalle;
+import Nodos.NodoFactura;
+import Nodos.NodoProducto;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -48,6 +52,9 @@ public class ABInventario extends JFrame {
     private ABProducto arbolProductos;
     private ABFactura arbolFacturas;
     private ABDetalle arbolDetalles;
+    private NodoDetalle nodoDetalleReporte;
+    private NodoFactura nodoFacturaReporte;
+    private NodoProducto nodoProductoReporte;
     int marcaIndex = 0;
     int productoIndex = 1;
     int facturaIndex = 2;
@@ -75,6 +82,11 @@ public class ABInventario extends JFrame {
     private JTable tablePorMarca;
     private JComboBox comboMarcasReporte;
     private JButton mostrarProductosDadaUnaButton;
+    private JComboBox comboBoxReporteFactura;
+    private JTable tablePorFactura;
+    private JButton mostrarInformacionAcercaDeButton;
+    private JButton mostrarFacturasDelMesButton;
+    private JTable tablePorFacturasMayo;
     private JScrollPane tablaPorMarca;
 
     public ABInventario() {
@@ -86,7 +98,6 @@ public class ABInventario extends JFrame {
         arbolProductos = new ABProducto();
         arbolFacturas = new ABFactura();
         arbolDetalles = new ABDetalle();
-
 
         agregarMarcaBtn.addActionListener(new ActionListener() {
             @Override
@@ -198,6 +209,18 @@ public class ABInventario extends JFrame {
                 tablaFromMarca();
             }
         });
+        mostrarInformacionAcercaDeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tablaFromFactura();
+            }
+        });
+        mostrarFacturasDelMesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tablaFacturasMayo();
+            }
+        });
     }
 
     public void agregarRegistro(){
@@ -273,6 +296,7 @@ public class ABInventario extends JFrame {
                 }
                 else return;
                 JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
+                comboBoxReporteFactura.addItem("Factura con id: " + Integer.parseInt(facturaAgregar));
                 comboBoxFacturas.addItem("Factura con id: " + Integer.parseInt(facturaAgregar));
                 limpiarUIFact();
             }
@@ -375,6 +399,7 @@ public class ABInventario extends JFrame {
                 String facturaEliminar = facturaId.getText();
                 String eliminarComboFactura = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
                 eliminarFromCombo(comboBoxFacturas,eliminarComboFactura);
+                eliminarFromCombo(comboBoxReporteFactura,eliminarComboFactura);
                 if(codeIsNumber(facturaEliminar)){
                     //Capturamos la fecha que indico el usuario
                     int selectedMesIndex = mesComboBox.getSelectedIndex();
@@ -399,6 +424,7 @@ public class ABInventario extends JFrame {
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                        comboBoxReporteFactura.addItem("Factura con id: " + Integer.parseInt(facturaEliminar));
                         comboBoxFacturas.addItem("Factura con id: " + Integer.parseInt(facturaEliminar));
                     }
                 }
@@ -501,6 +527,7 @@ public class ABInventario extends JFrame {
                 String facturaEliminar = facturaId.getText();
                 String eliminarComboFactura = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
                 eliminarFromCombo(comboBoxFacturas,eliminarComboFactura);
+                eliminarFromCombo(comboBoxReporteFactura,eliminarComboFactura);
                 if(codeIsNumber(facturaEliminar)){
                     String searchResult;
                     searchResult = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
@@ -714,11 +741,12 @@ public class ABInventario extends JFrame {
         }
     }
     public void tablaFromMes(){
+        DefaultTableModel modelo = new DefaultTableModel();
         try{
             int selectedMesIndex = comboReporteMes.getSelectedIndex();
             // Retrieve the selected item
             String selectedMesText = (String) comboReporteMes.getItemAt(selectedMesIndex);
-            DefaultTableModel modelo = new DefaultTableModel();
+
             modelo.setRowCount(0);
             modelo.addColumn("Mes");
             modelo.addColumn("Total ventas");
@@ -736,15 +764,16 @@ public class ABInventario extends JFrame {
             tablaPorMes.setModel(modelo);
         }catch (NullPointerException npe){
             JOptionPane.showMessageDialog(null, "Usuario: El mes que esta tratando visualizar no tiene ventas aún", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            modelo.setRowCount(0);
         }
 
     }
     public void tablaFromMarca(){
+        DefaultTableModel modelo = new DefaultTableModel();
         try{
             int selectedMarcaIndex = comboMarcasReporte.getSelectedIndex();
             // Retrieve the selected item
             String selectedMarcaText = (String) comboMarcasReporte.getItemAt(selectedMarcaIndex);
-            DefaultTableModel modelo = new DefaultTableModel();
             modelo.setRowCount(0);
             modelo.addColumn("Producto");
             int marcaAsInt = idFromText(selectedMarcaText);
@@ -757,6 +786,59 @@ public class ABInventario extends JFrame {
             tablePorMarca.setModel(modelo);
         }catch (NullPointerException npe) {
             JOptionPane.showMessageDialog(null, "Usuario: La marca que esta tratando visualizar no tiene productos aún", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            modelo.setRowCount(0);
+        }
+    }
+    public void tablaFromFactura(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        try{
+            int selectedFacturaIndex = comboBoxReporteFactura.getSelectedIndex();
+            // Retrieve the selected item
+            String selectedFacturaText = (String) comboBoxReporteFactura.getItemAt(selectedFacturaIndex);
+            modelo.setRowCount(0);
+            modelo.addColumn("Id factura");
+            modelo.addColumn("Fecha factura");
+            modelo.addColumn("Hora factura");
+            modelo.addColumn("Descripcion producto");
+            modelo.addColumn("Cantidad de productos");
+            modelo.addColumn("Valor producto");
+            modelo.addColumn("Total factura");
+            int facturaAsInt = idFromText(selectedFacturaText);
+            nodoDetalleReporte = arbolDetalles.buscarDetallePorFactura(facturaAsInt);
+            nodoFacturaReporte = arbolFacturas.buscaFactura(facturaAsInt);
+            nodoProductoReporte = arbolProductos.buscarProducto(nodoDetalleReporte.idProducto);
+            int valorFactura = arbolDetalles.buscarPrecio(nodoFacturaReporte.idFactura);
+            modelo.addRow(new Object[]{facturaAsInt,nodoFacturaReporte.fechaFactura,nodoFacturaReporte.horaFactura,nodoProductoReporte.descProducto,nodoDetalleReporte.cantidadProductos,nodoDetalleReporte.valorProducto,valorFactura});
+            tablePorFactura.setModel(modelo);
+        }catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Usuario: La factura que esta tratando visualizar está incompleta", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            modelo.setRowCount(0);
+        }
+    }
+    public void tablaFacturasMayo(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        try{
+            modelo.setRowCount(0);
+            modelo.addColumn("Id factura");
+            modelo.addColumn("Fecha factura");
+            modelo.addColumn("Hora factura");
+            modelo.addColumn("Total factura");
+
+            int mesEnColumna = 5;
+            int totalFactura=0;
+            LocalDate fechaFiltro = LocalDate.of(2023,mesEnColumna,7);
+            ArrayList<Integer> baseFacturas = new ArrayList<>();
+            ArrayList<Integer> facturasPorMes = arbolFacturas.imprimirEnOrden(fechaFiltro,baseFacturas);
+            for(int i=0; i<facturasPorMes.size(); i++) {
+                int idToDetalle = facturasPorMes.get(i);
+                NodoFactura facturaMes = arbolFacturas.buscaFactura(idToDetalle);
+                totalFactura=arbolDetalles.buscarPrecio(facturaMes.idFactura);
+                modelo.addRow(new Object[]{facturaMes.idFactura,facturaMes.fechaFactura, facturaMes.horaFactura, totalFactura});
+            }
+            tablePorFacturasMayo.setModel(modelo);
+        }catch (NullPointerException npe){
+            JOptionPane.showMessageDialog(null, "Usuario: El mes de mayo aún no tiene facturas completas para mostrar", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            modelo.setRowCount(0);
         }
     }
 }

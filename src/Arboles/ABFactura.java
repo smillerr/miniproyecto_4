@@ -75,6 +75,25 @@ public class ABFactura {
         }
     }
 
+    public NodoFactura buscaFactura(int idFactura) {
+
+        return buscarFacturaRecursivo(raiz, idFactura);
+    }
+
+    private NodoFactura buscarFacturaRecursivo(NodoFactura nodo, int idFactura) {
+        if (nodo == null) {
+            return null;
+        }
+
+        if (idFactura==nodo.idFactura) {
+            return nodo;
+        } else if (idFactura < nodo.idFactura) {
+            return buscarFacturaRecursivo(nodo.hijoIzquierdo, idFactura);
+        } else {
+            return buscarFacturaRecursivo(nodo.hijoDerecho, idFactura);
+        }
+    }
+
     public String editar(int idFactura, LocalDate fechaFactura, LocalTime horaFactura) {
         raiz = editarRecursivo(raiz, idFactura, fechaFactura, horaFactura);
         String buscarNodo = buscar(idFactura);

@@ -1,5 +1,6 @@
 package Arboles;
 
+import Nodos.NodoFactura;
 import Nodos.NodoProducto;
 
 import javax.swing.*;
@@ -69,6 +70,23 @@ public class ABProducto {
             return buscarDetalladoRecursivo(nodo.hijoIzquierdo, idProducto);
         } else {
             return buscarDetalladoRecursivo(nodo.hijoDerecho, idProducto);
+        }
+    }
+    public NodoProducto buscarProducto(int idProducto) {
+
+        return buscarProductoRecursivo(raiz, idProducto);
+    }
+
+    private NodoProducto buscarProductoRecursivo(NodoProducto nodo, int idProducto) {
+        if (nodo == null) {
+            return null;
+        }
+        if (idProducto==nodo.idProducto) {
+            return nodo;
+        } else if (idProducto < nodo.idMarca) {
+            return buscarProductoRecursivo(nodo.hijoIzquierdo, idProducto);
+        } else {
+            return buscarProductoRecursivo(nodo.hijoDerecho, idProducto);
         }
     }
     public String editar(String descProducto, int idProducto, int idMarca) {
