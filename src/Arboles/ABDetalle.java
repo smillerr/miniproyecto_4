@@ -34,6 +34,7 @@ public class ABDetalle {
             return nodo;
         }
         if(idDetalle == nodo.idDetalle){
+            JOptionPane.showMessageDialog(null, "El detalle de factura que esta intentando insertar ya existe, por favor seleccione un codigo diferente", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
             return nodo;
         }
         if (idDetalle < nodo.idDetalle) {

@@ -1,5 +1,6 @@
 package Arboles;
 
+import Nodos.NodoMarca;
 import Nodos.NodoProducto;
 
 import javax.swing.*;
@@ -20,7 +21,9 @@ public class ABProducto {
             nodo = new NodoProducto(descProducto, idProducto, idMarca);
             return nodo;
         }
-
+        if(idProducto==nodo.idProducto){
+            JOptionPane.showMessageDialog(null, "El producto que esta intentando insertar ya existe, por favor seleccione un codigo diferente", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+        }
         if (idProducto < nodo.idProducto) {
             nodo.hijoIzquierdo = insertarRecursivo(nodo.hijoIzquierdo, descProducto, idProducto, idMarca);
         } else if (idProducto > nodo.idProducto) {
@@ -40,9 +43,8 @@ public class ABProducto {
             return "";
         }
 
-
-        if (idProducto==nodo.idMarca) {
-            return nodo.descProducto + " - " + nodo.idProducto + " - " + nodo.idMarca;
+        if (idProducto==nodo.idProducto) {
+            return nodo.descProducto + "-" + nodo.idProducto;
         } else if (idProducto < nodo.idMarca) {
             return buscarRecursivo(nodo.hijoIzquierdo, idProducto);
         } else {
@@ -50,6 +52,25 @@ public class ABProducto {
         }
     }
 
+    public String buscarDetallado(int idProducto) {
+
+        return buscarDetalladoRecursivo(raiz, idProducto);
+    }
+
+    private String buscarDetalladoRecursivo(NodoProducto nodo, int idProducto) {
+        if (nodo == null) {
+            return "";
+        }
+
+
+        if (idProducto==nodo.idProducto) {
+            return nodo.descProducto + "-" + nodo.idProducto + "-" + nodo.idMarca;
+        } else if (idProducto < nodo.idMarca) {
+            return buscarDetalladoRecursivo(nodo.hijoIzquierdo, idProducto);
+        } else {
+            return buscarDetalladoRecursivo(nodo.hijoDerecho, idProducto);
+        }
+    }
     public String editar(String descProducto, int idProducto, int idMarca) {
         raiz = editarRecursivo(raiz, descProducto, idProducto, idMarca);
         String buscarNodo = buscar(idProducto);

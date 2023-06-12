@@ -22,13 +22,13 @@ public class ABInventario extends JFrame {
     private JButton agregarMarcaBtn;
     private JButton editarMarcaBtn;
     private JButton eliminarMarcaBtn;
-    private JTextField marcaIdBusqueda;
+    private JTextField marcaSearch;
     private JTextField productoId;
     private JTextField descProducto;
     private JButton agregarProducto;
-    private JButton editarButton1;
-    private JButton eliminarButton1;
-    private JTextField textField7;
+    private JButton editarProductoBtn;
+    private JButton eliminarProductoBtn;
+    private JTextField productoSearch;
     private JTextField facturaId;
     private JComboBox mesComboBox;
     private JComboBox diaComboBox;
@@ -36,7 +36,7 @@ public class ABInventario extends JFrame {
     private JComboBox horaComboBox;
     private JComboBox minutoComboBox;
     private JButton agregarFactura;
-    private JButton editarButton2;
+    private JButton editarFacturaBtn;
 
     private JButton deleteButton;
     private JComboBox comboBoxMarcas;
@@ -50,21 +50,26 @@ public class ABInventario extends JFrame {
     int productoIndex = 1;
     int facturaIndex = 2;
     int detalleIndex = 3;
-    private JButton eliminarButton3;
-    private JTextField textField9;
+    private JButton eliminarFacturaBtn;
+    private JTextField facturaSearch;
     private JTextField detalleId;
     private JTextField undText;
     private JTextField priceText;
-    private JButton añadirButton;
-    private JButton editarButton3;
-    private JButton eliminarButton2;
-    private JTextField textField15;
+    private JButton agregarDetalle;
+    private JButton editarDetalleBtn;
+    private JButton eliminarDetalleBtn;
+    private JTextField detalleSearch;
     private JComboBox comboBox7;
     private JButton mostrarDatosDeLasButton;
     private JTable table1;
     private JTextArea facturaTextArea;
     private JComboBox comboBoxProductos;
     private JComboBox comboBoxFacturas;
+    private JButton buscarProductoBtn;
+    private JButton buscarFacturaBtn;
+    private JButton buscarDetalleBtn;
+    private JTextArea productoTextArea;
+    private JTextArea detalleTextArea;
 
     public ABInventario() {
         super("Inventario");
@@ -82,18 +87,6 @@ public class ABInventario extends JFrame {
                 agregarRegistro();
             }
         });
-        editarMarcaBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarMarcas(marcaTextArea);
-            }
-        });
-        buscarMarca.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarMarcas();
-            }
-        });
         agregarProducto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +100,7 @@ public class ABInventario extends JFrame {
                 agregarRegistro();
             }
         });
-        añadirButton.addActionListener(new ActionListener() {
+        agregarDetalle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarRegistro();
@@ -119,10 +112,80 @@ public class ABInventario extends JFrame {
                 editarRegistro();
             }
         });
+        editarFacturaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarRegistro();
+            }
+        });
+        editarDetalleBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarRegistro();
+            }
+        });
+        editarProductoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarRegistro();
+            }
+        });
+        eliminarMarcaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarRegistro();
+            }
+        });
+
+        eliminarProductoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarRegistro();
+            }
+        });
+        eliminarFacturaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarRegistro();
+            }
+        });
+        eliminarDetalleBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eliminarRegistro();
+            }
+        });
+        buscarMarca.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarRegistro();
+            }
+        });
+        buscarProductoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarRegistro();
+            }
+        });
+        buscarFacturaBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarRegistro();
+            }
+        });
+        buscarDetalleBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarRegistro();
+            }
+        });
     }
 
     public void agregarRegistro(){
-
+        marcaTextArea.setText("");
+        productoTextArea.setText("");
+        facturaTextArea.setText("");
+        detalleTextArea.setText("");
         int registro = whichRegistro(tabbedPane1.getSelectedIndex());
 
         if(registro==0){
@@ -187,7 +250,7 @@ public class ABInventario extends JFrame {
                     arbolFacturas.insertar(Integer.parseInt(facturaAgregar), fechaAgregar, horaAgregar);
                 }
                 else return;
-                comboBoxFacturas.addItem("Factura con id:" + Integer.parseInt(facturaAgregar));
+                comboBoxFacturas.addItem("Factura con id: " + Integer.parseInt(facturaAgregar));
                 limpiarUIFact();
             }
             else {
@@ -215,15 +278,23 @@ public class ABInventario extends JFrame {
                 JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
             }
         }
+        JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
     }
 
     public void editarRegistro(){
+        marcaTextArea.setText("");
+        productoTextArea.setText("");
+        facturaTextArea.setText("");
+        detalleTextArea.setText("");
         int registro = whichRegistro(tabbedPane1.getSelectedIndex());
 
         if(registro==0){
             if(!marcaNombre.getText().equals("") && !marcaId.getText().equals("")){
+                //Buscar la marca con el id que voy a editar
                 String newNombre = marcaNombre.getText();
                 String marcaEditar = marcaId.getText();
+                String eliminarComboMarca = arbolMarcas.buscar(Integer.parseInt(marcaEditar));
+                eliminarFromCombo(comboBoxMarcas,eliminarComboMarca);
                 if(codeIsNumber(marcaEditar)){
                     String searchResult;
                     searchResult = arbolMarcas.editar(newNombre, Integer.parseInt(marcaEditar));
@@ -232,6 +303,7 @@ public class ABInventario extends JFrame {
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                        comboBoxMarcas.addItem(marcaEditar + "-" + newNombre);
                     }
                 }
                 else{
@@ -248,6 +320,8 @@ public class ABInventario extends JFrame {
             if(descProducto.getText()!="" && productoId.getText()!="" && comboBoxMarcas.getSelectedIndex()!=0){
                 String newDescProd = descProducto.getText();
                 String prodIdEditar = productoId.getText();
+                String eliminarComboProducto = arbolProductos.buscar(Integer.parseInt(prodIdEditar));
+                eliminarFromCombo(comboBoxProductos,eliminarComboProducto);
                 if(codeIsNumber(prodIdEditar)){
                     int selectedIndex = comboBoxMarcas.getSelectedIndex();
                     // Retrieve the selected item
@@ -260,6 +334,7 @@ public class ABInventario extends JFrame {
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                        comboBoxProductos.addItem(Integer.parseInt(prodIdEditar) + "-" + newDescProd);
                     }
                 }
                 else return;
@@ -271,29 +346,37 @@ public class ABInventario extends JFrame {
         }
         else if(registro==2){
             if(!facturaId.getText().equals("")){
-                String facturaAgregar = facturaId.getText();
-                if(codeIsNumber(facturaAgregar)){
+                String facturaEliminar = facturaId.getText();
+                String eliminarComboFactura = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
+                eliminarFromCombo(comboBoxFacturas,eliminarComboFactura);
+                if(codeIsNumber(facturaEliminar)){
                     //Capturamos la fecha que indico el usuario
                     int selectedMesIndex = mesComboBox.getSelectedIndex();
                     int selectedDiaIndex = diaComboBox.getSelectedIndex();
                     int selectedYearIndex = yearComboBox.getSelectedIndex();
                     // Devolvemos el contenido de los items seleccionados
-                    String selectedMes = (String) mesComboBox.getItemAt(selectedMesIndex);
-                    String selectedDia = (String) diaComboBox.getItemAt(selectedDiaIndex);
-                    String selectedYear = (String) yearComboBox.getItemAt(selectedYearIndex);
+                    String newSelectedMes = (String) mesComboBox.getItemAt(selectedMesIndex);
+                    String newSelectedDia = (String) diaComboBox.getItemAt(selectedDiaIndex);
+                    String newSelectedYear = (String) yearComboBox.getItemAt(selectedYearIndex);
                     //Capturamos la hora seleccionada por el usuario
                     int selectedHoraIndex = horaComboBox.getSelectedIndex();
                     int selectedMintuoIndex = minutoComboBox.getSelectedIndex();
                     //Devolvemos el contenido de los items seleccionados
                     String selectedHora = (String) horaComboBox.getItemAt(selectedHoraIndex);
                     String selectedMinuto = (String) minutoComboBox.getItemAt(selectedMintuoIndex);
-                    LocalDate fechaAgregar = LocalDate.of(Integer.parseInt(selectedYear), Integer.parseInt(selectedMes), Integer.parseInt(selectedDia));
-                    LocalTime horaAgregar = LocalTime.of(Integer.parseInt(selectedHora), Integer.parseInt(selectedMinuto));
-
-                    arbolFacturas.insertar(Integer.parseInt(facturaAgregar), fechaAgregar, horaAgregar);
+                    LocalDate newFechaAgregar = LocalDate.of(Integer.parseInt(newSelectedYear), Integer.parseInt(newSelectedMes), Integer.parseInt(newSelectedDia));
+                    LocalTime newHoraAgregar = LocalTime.of(Integer.parseInt(selectedHora), Integer.parseInt(selectedMinuto));
+                    String searchResult;
+                    searchResult = arbolFacturas.editar(Integer.parseInt(facturaEliminar), newFechaAgregar, newHoraAgregar);
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando editar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                        comboBoxFacturas.addItem("Factura con id: " + Integer.parseInt(facturaEliminar));
+                    }
                 }
                 else return;
-                comboBoxFacturas.addItem("Factura con id:" + Integer.parseInt(facturaAgregar));
                 limpiarUIFact();
             }
             else {
@@ -301,18 +384,25 @@ public class ABInventario extends JFrame {
             }
         }
         else if(registro==3){
-            if(comboBoxFacturas.getSelectedIndex()!=0 && comboBoxProductos.getSelectedIndex()!=0 && !undText.equals("") && !priceText.equals("")){
-                String cantidad = undText.getText();
-                String price = priceText.getText();
-                String detalle = detalleId.getText();
-                if(codeIsNumber(cantidad) && codeIsNumber(price) && codeIsNumber(detalle)){
+            if(comboBoxFacturas.getSelectedIndex()!=0 && comboBoxProductos.getSelectedIndex()!=0 && !undText.equals("") && !priceText.equals("") && !detalleId.equals("")){
+                String newCantidad = undText.getText();
+                String newPrice = priceText.getText();
+                String detalleEditar = detalleId.getText();
+                if(codeIsNumber(newCantidad) && codeIsNumber(newPrice) && codeIsNumber(detalleEditar)){
                     int productoIndex = comboBoxProductos.getSelectedIndex();
                     int facturaIndex = comboBoxFacturas.getSelectedIndex();
-                    String selectedProducto = (String) comboBoxProductos.getItemAt(productoIndex);
-                    String selectedFactura = (String) comboBoxFacturas.getItemAt(facturaIndex);
-                    int newFactura = idFromText(selectedFactura);
-                    int newProducto = idFromText(selectedProducto);
-                    arbolDetalles.insertar(newFactura, Integer.parseInt(detalle), newProducto, Integer.parseInt(cantidad), Integer.parseInt(price));
+                    String newSelectedProducto = (String) comboBoxProductos.getItemAt(productoIndex);
+                    String newSelectedFactura = (String) comboBoxFacturas.getItemAt(facturaIndex);
+                    int newFactura = idFromText(newSelectedFactura);
+                    int newProducto = idFromText(newSelectedProducto);
+                    String searchResult;
+                    searchResult = arbolDetalles.editar(newFactura, Integer.parseInt(detalleEditar), newProducto, Integer.parseInt(newCantidad), Integer.parseInt(newPrice));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando editar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
                 else return;
                 limpiarUIDetalle();
@@ -322,26 +412,203 @@ public class ABInventario extends JFrame {
             }
         }
     }
-    public void mostrarMarcas(JTextArea ta){
-        arbolMarcas.imprimirEnOrden(ta);
-    }
-    public void buscarMarcas(){
-        try{
-            int idMarcaAgregar = Integer.parseInt(marcaId.getText());
-            arbolMarcas.buscar(idMarcaAgregar);
-        }catch (NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "El codigo de la marca a buscar debe ser un número", "Advertencia", 1);
+    public void eliminarRegistro(){
+        marcaTextArea.setText("");
+        productoTextArea.setText("");
+        facturaTextArea.setText("");
+        detalleTextArea.setText("");
+        int registro = whichRegistro(tabbedPane1.getSelectedIndex());
+
+        if(registro==0){
+            if(!marcaId.getText().equals("")){
+                //Buscar la marca con el id que voy a borrar
+                String marcaEliminar = marcaId.getText();
+                String eliminarComboMarca = arbolMarcas.buscar(Integer.parseInt(marcaEliminar));
+                eliminarFromCombo(comboBoxMarcas,eliminarComboMarca);
+                if(codeIsNumber(marcaEliminar)){
+                    String searchResult;
+                    searchResult = arbolMarcas.buscar(Integer.parseInt(marcaEliminar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando eliminar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        arbolMarcas.eliminar(Integer.parseInt(marcaEliminar));
+                        JOptionPane.showMessageDialog(null, "Registro eliminado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else{
+                    return;
+                }
+                //Limpiamos la UI
+                limpiarUIMarca();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==1){
+            if(!productoId.getText().equals("")){
+                String prodIdEliminar = productoId.getText();
+                String eliminarComboProducto = arbolProductos.buscar(Integer.parseInt(prodIdEliminar));
+                eliminarFromCombo(comboBoxProductos,eliminarComboProducto);
+                if(codeIsNumber(prodIdEliminar)){
+                    String searchResult;
+                    searchResult = arbolProductos.buscar(Integer.parseInt(prodIdEliminar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando eliminar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        arbolProductos.eliminar(Integer.parseInt(prodIdEliminar));
+                        JOptionPane.showMessageDialog(null, "Registro eliminado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else return;
+                limpiarUIProd();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==2){
+            if(!facturaId.getText().equals("")){
+                String facturaEliminar = facturaId.getText();
+                String eliminarComboFactura = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
+                eliminarFromCombo(comboBoxFacturas,eliminarComboFactura);
+                if(codeIsNumber(facturaEliminar)){
+                    String searchResult;
+                    searchResult = arbolFacturas.buscar(Integer.parseInt(facturaEliminar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando editar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        arbolFacturas.eliminar(Integer.parseInt(facturaEliminar));
+                        JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else return;
+                limpiarUIFact();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==3){
+            if(!detalleId.equals("")){
+                String detalleEliminar = detalleId.getText();
+                if(codeIsNumber(detalleEliminar)){
+                    String searchResult;
+                    searchResult = arbolDetalles.buscar(Integer.parseInt(detalleEliminar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando eliminar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        arbolDetalles.eliminar(Integer.parseInt(detalleEliminar));
+                        JOptionPane.showMessageDialog(null, "Registro eliminado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else return;
+                limpiarUIDetalle();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
         }
     }
-    public void actualizarMarca(){
-        String nombreActualizar = marcaNombre.getText();
-        try{
-            int idMarcaAgregar = Integer.parseInt(marcaId.getText());
-            arbolMarcas.editar(nombreActualizar,idMarcaAgregar);
-        }catch (NumberFormatException nfe){
-            JOptionPane.showMessageDialog(null, "El codigo de la marca que desea actualizar debe ser un número", "Advertencia", 1);
+    public void buscarRegistro(){
+        marcaTextArea.setText("");
+        productoTextArea.setText("");
+        facturaTextArea.setText("");
+        detalleTextArea.setText("");
+        int registro = whichRegistro(tabbedPane1.getSelectedIndex());
+
+        if(registro==0){
+            if(!marcaSearch.getText().equals("")){
+                //Buscar la marca con el id que voy a mostrar y buscar
+                String marcaBuscar = marcaSearch.getText();
+                if(codeIsNumber(marcaBuscar)){
+                    String searchResult;
+                    searchResult = arbolMarcas.buscar(Integer.parseInt(marcaBuscar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando buscar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        String registroEncontrado = arbolMarcas.buscarDetallado(Integer.parseInt(marcaBuscar))+ "\n";
+                        marcaTextArea.append(registroEncontrado);
+                    }
+                }
+                else{
+                    return;
+                }
+                //Limpiamos la UI
+                limpiarUIMarca();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
         }
-        limpiarUIMarca();
+        else if(registro==1){
+            if(!productoSearch.getText().equals("")){
+                String prodIdBuscar = productoSearch.getText();
+                if(codeIsNumber(prodIdBuscar)){
+                    String searchResult;
+                    searchResult = arbolProductos.buscar(Integer.parseInt(prodIdBuscar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando buscar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        String registroEncontrado = arbolProductos.buscarDetallado(Integer.parseInt(prodIdBuscar))+ "\n";
+                        productoTextArea.append(registroEncontrado);
+                    }
+                }
+                else return;
+                limpiarUIProd();
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==2){
+            if(!facturaSearch.getText().equals("")){
+                String facturaBuscar = facturaSearch.getText();
+                if(codeIsNumber(facturaBuscar)){
+                    String searchResult;
+                    searchResult = arbolFacturas.buscar(Integer.parseInt(facturaBuscar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando buscar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        String registroEncontrado = arbolFacturas.buscarDetallado(Integer.parseInt(facturaBuscar))+ "\n";
+                        facturaTextArea.append(registroEncontrado);
+                    }
+                }
+                else return;
+                limpiarUIFact();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
+        else if(registro==3){
+            if(!detalleSearch.equals("")){
+                String detalleBuscar = detalleSearch.getText();
+                if(codeIsNumber(detalleBuscar)){
+                    String searchResult;
+                    searchResult = arbolDetalles.buscar(Integer.parseInt(detalleBuscar));
+                    if(searchResult.equals("")){
+                        JOptionPane.showMessageDialog(null, "El registro que esta intentando buscar no existe", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+                    }
+                    else{
+                        String registroEncontrado = arbolDetalles.buscar(Integer.parseInt(detalleBuscar))+ "\n";
+                        detalleTextArea.append(registroEncontrado);
+                    }
+                }
+                else return;
+                limpiarUIDetalle();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            }
+        }
     }
     public void limpiarUIMarca(){
         marcaNombre.setText("");
@@ -410,5 +677,13 @@ public class ABInventario extends JFrame {
         }
         return id;
     }
-
+    public void eliminarFromCombo(JComboBox comboEliminar, String itemEliminar){
+        int itemCount = comboEliminar.getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            if (comboEliminar.getItemAt(i).equals(itemEliminar)) {
+                comboEliminar.removeItemAt(i);
+                break;
+            }
+        }
+    }
 }

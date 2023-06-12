@@ -22,6 +22,10 @@ public class ABFactura {
             nodo = new NodoFactura(idFactura, fechaFactura, horaFactura);
             return nodo;
         }
+        if(idFactura == nodo.idFactura){
+            JOptionPane.showMessageDialog(null, "La factura que esta intentando insertar ya existe, por favor seleccione un codigo diferente", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+            return nodo;
+        }
         if (idFactura < nodo.idFactura) {
             nodo.hijoIzquierdo = insertarRecursivo(nodo.hijoIzquierdo, idFactura, fechaFactura, horaFactura);
         } else if (idFactura > nodo.idFactura) {
@@ -43,11 +47,30 @@ public class ABFactura {
 
 
         if (idFactura==nodo.idFactura) {
-            return "Factura con id: " + nodo.idFactura + " - " + nodo.fechaFactura + " - " + nodo.horaFactura;
+            return "Factura con id: " + nodo.idFactura;
         } else if (idFactura < nodo.idFactura) {
             return buscarRecursivo(nodo.hijoIzquierdo, idFactura);
         } else {
             return buscarRecursivo(nodo.hijoDerecho, idFactura);
+        }
+    }
+
+    public String buscarDetallado(int idFactura) {
+
+        return buscarDetalladoRecursivo(raiz, idFactura);
+    }
+
+    private String buscarDetalladoRecursivo(NodoFactura nodo, int idFactura) {
+        if (nodo == null) {
+            return "";
+        }
+
+        if (idFactura==nodo.idFactura) {
+            return "Factura con id: " + nodo.idFactura + "-" + nodo.fechaFactura + "-" + nodo.horaFactura;
+        } else if (idFactura < nodo.idFactura) {
+            return buscarDetalladoRecursivo(nodo.hijoIzquierdo, idFactura);
+        } else {
+            return buscarDetalladoRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
 

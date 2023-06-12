@@ -9,7 +9,7 @@ public class Main {
             @Override
             public void run() {
                 JFrame frame = new ABInventario();
-                frame.setSize(800, 600);
+                frame.setSize(900, 600);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
                 frame.addWindowListener(new WindowAdapter() {

@@ -23,7 +23,7 @@ public class ABMarca {
             return nodo;
         }
         if(idMarca == nodo.idMarca){
-            System.out.println("Lo sentimos, ya existe una marca con el id" + idMarca);
+            JOptionPane.showMessageDialog(null, "La marca que esta intentando insertar ya existe, por favor seleccione un codigo diferente", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
             return nodo;
         }
         if (idMarca < nodo.idMarca) {
@@ -47,11 +47,30 @@ public class ABMarca {
 
 
         if (idMarca==nodo.idMarca) {
-            return nodo.nombreMarca + " - " + nodo.idMarca;
+            return nodo.idMarca+"-"+nodo.nombreMarca;
         } else if (idMarca < nodo.idMarca) {
             return buscarRecursivo(nodo.hijoIzquierdo, idMarca);
         } else {
             return buscarRecursivo(nodo.hijoDerecho, idMarca);
+        }
+    }
+    public String buscarDetallado(int idMarca) {
+
+        return buscarDetalladoRecursivo(raiz, idMarca);
+    }
+
+    private String buscarDetalladoRecursivo(NodoMarca nodo, int idMarca) {
+        if (nodo == null) {
+            return "";
+        }
+
+
+        if (idMarca==nodo.idMarca) {
+            return nodo.idMarca+"-"+nodo.nombreMarca;
+        } else if (idMarca < nodo.idMarca) {
+            return buscarDetalladoRecursivo(nodo.hijoIzquierdo, idMarca);
+        } else {
+            return buscarDetalladoRecursivo(nodo.hijoDerecho, idMarca);
         }
     }
 
