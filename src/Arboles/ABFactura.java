@@ -5,6 +5,7 @@ import Nodos.NodoFactura;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class ABFactura {
     NodoFactura raiz;
@@ -148,18 +149,21 @@ public class ABFactura {
         return nodo;
     }
 
-    public void imprimirEnOrden(JTextArea ta, LocalDate fechaDeseada) {
-        //this.ta = ta;
-        imprimirEnOrdenRecursivo(raiz, fechaDeseada);
+    public ArrayList<Integer> imprimirEnOrden(LocalDate fechaDeseada, ArrayList<Integer> fechasPorMes) {
+        ArrayList<Integer> resultadoMes = imprimirEnOrdenRecursivo(raiz, fechaDeseada, fechasPorMes);
+        return resultadoMes;
     }
 
-    private void imprimirEnOrdenRecursivo(NodoFactura nodo , LocalDate fechaDeseada) {
+    private ArrayList<Integer> imprimirEnOrdenRecursivo(NodoFactura nodo , LocalDate fechaDeseada, ArrayList<Integer> fechasPorMes) {
         if (nodo != null && fechaDeseada.getMonth()==nodo.fechaFactura.getMonth()) {
-            imprimirEnOrdenRecursivo(nodo.hijoIzquierdo, fechaDeseada);
-            System.out.println("Facturas del mes: " + nodo.idFactura + nodo.horaFactura + nodo.fechaFactura);
-            imprimirEnOrdenRecursivo(nodo.hijoDerecho, fechaDeseada);
+            imprimirEnOrdenRecursivo(nodo.hijoIzquierdo, fechaDeseada, fechasPorMes);
+            imprimirEnOrdenRecursivo(nodo.hijoDerecho, fechaDeseada, fechasPorMes);
+            fechasPorMes.add(nodo.idFactura);
+            return fechasPorMes;
         }
+        return null;
     }
+
 
     public int tamaño() {
         return tamañoRecursivo(raiz);

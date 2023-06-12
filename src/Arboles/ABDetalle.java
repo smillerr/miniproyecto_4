@@ -3,8 +3,6 @@ package Arboles;
 import Nodos.NodoDetalle;
 
 import javax.swing.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class ABDetalle {
     NodoDetalle raiz;
@@ -66,6 +64,24 @@ public class ABDetalle {
         }
     }
 
+    public int buscarPrecio(int idFactura) {
+
+        return buscarPrecioRecursivo(raiz, idFactura);
+    }
+
+    private int buscarPrecioRecursivo(NodoDetalle nodo, int idFactura) {
+        if (nodo == null) {
+            return 0;
+        }
+
+        if (idFactura==nodo.idFactura) {
+            return nodo.valorProducto * nodo.cantidadProductos;
+        } else if (idFactura < nodo.idFactura) {
+            return buscarPrecioRecursivo(nodo.hijoIzquierdo, idFactura);
+        } else {
+            return buscarPrecioRecursivo(nodo.hijoDerecho, idFactura);
+        }
+    }
     public String editar(int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         raiz = editarRecursivo(raiz, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
         String buscarNodo = buscar(idDetalle);

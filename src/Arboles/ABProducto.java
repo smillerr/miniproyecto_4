@@ -1,9 +1,9 @@
 package Arboles;
 
-import Nodos.NodoMarca;
 import Nodos.NodoProducto;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class ABProducto {
     NodoProducto raiz;
@@ -145,17 +145,20 @@ public class ABProducto {
         return nodo;
     }
 
-    public void imprimirEnOrden(JTextArea ta) {
+    public ArrayList<String> imprimirEnOrdenByMarca(int idMarca, ArrayList<String> productosConMarca) {
         //this.ta = ta;
-        imprimirEnOrdenRecursivo(raiz);
+        ArrayList<String> resultadoProductos = imprimirEnOrdenByMarcaRecursivo(raiz, idMarca, productosConMarca);
+        return  resultadoProductos;
     }
 
-    private void imprimirEnOrdenRecursivo(NodoProducto nodo) {
-        if (nodo != null) {
-            imprimirEnOrdenRecursivo(nodo.hijoIzquierdo);
-            //ta.append(nodo.nombreMarca + " - " + nodo.idMarca + "\n");
-            imprimirEnOrdenRecursivo(nodo.hijoDerecho);
+    private ArrayList<String> imprimirEnOrdenByMarcaRecursivo(NodoProducto nodo, int idMarca, ArrayList<String> productosConMarca) {
+        if (nodo != null && idMarca==nodo.idMarca) {
+            imprimirEnOrdenByMarcaRecursivo(nodo.hijoIzquierdo, idMarca, productosConMarca);
+            imprimirEnOrdenByMarcaRecursivo(nodo.hijoDerecho, idMarca, productosConMarca);
+            productosConMarca.add(nodo.idProducto + "-" + nodo.descProducto);
+            return productosConMarca;
         }
+        return null;
     }
 
     public int tamaño() {

@@ -3,10 +3,12 @@ import Arboles.ABFactura;
 import Arboles.ABMarca;
 import Arboles.ABProducto;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.regex.*;
 
 public class ABInventario extends JFrame {
@@ -59,9 +61,9 @@ public class ABInventario extends JFrame {
     private JButton editarDetalleBtn;
     private JButton eliminarDetalleBtn;
     private JTextField detalleSearch;
-    private JComboBox comboBox7;
+    private JComboBox comboReporteMes;
     private JButton mostrarDatosDeLasButton;
-    private JTable table1;
+    private JTable tablaPorMes;
     private JTextArea facturaTextArea;
     private JComboBox comboBoxProductos;
     private JComboBox comboBoxFacturas;
@@ -70,6 +72,10 @@ public class ABInventario extends JFrame {
     private JButton buscarDetalleBtn;
     private JTextArea productoTextArea;
     private JTextArea detalleTextArea;
+    private JTable tablePorMarca;
+    private JComboBox comboMarcasReporte;
+    private JButton mostrarProductosDadaUnaButton;
+    private JScrollPane tablaPorMarca;
 
     public ABInventario() {
         super("Inventario");
@@ -80,6 +86,7 @@ public class ABInventario extends JFrame {
         arbolProductos = new ABProducto();
         arbolFacturas = new ABFactura();
         arbolDetalles = new ABDetalle();
+
 
         agregarMarcaBtn.addActionListener(new ActionListener() {
             @Override
@@ -179,6 +186,18 @@ public class ABInventario extends JFrame {
                 buscarRegistro();
             }
         });
+        mostrarDatosDeLasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tablaFromMes();
+            }
+        });
+        mostrarProductosDadaUnaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tablaFromMarca();
+            }
+        });
     }
 
     public void agregarRegistro(){
@@ -198,8 +217,10 @@ public class ABInventario extends JFrame {
                 else{
                     return;
                 }
+                JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
                 //Agregamos la marca al comboBox de marcas
                 comboBoxMarcas.addItem(marcaAgregar + "-" + nombreAgregar);
+                comboMarcasReporte.addItem(marcaAgregar + "-" + nombreAgregar);
                 //Limpiamos la UI
                 limpiarUIMarca();
             }
@@ -219,6 +240,7 @@ public class ABInventario extends JFrame {
                     arbolProductos.insertar(descProd, Integer.parseInt(prodIdAgregar), idNewMarca);
                 }
                 else return;
+                JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
                 comboBoxProductos.addItem(Integer.parseInt(prodIdAgregar) + "-" + descProd);
                 limpiarUIProd();
             }
@@ -250,6 +272,7 @@ public class ABInventario extends JFrame {
                     arbolFacturas.insertar(Integer.parseInt(facturaAgregar), fechaAgregar, horaAgregar);
                 }
                 else return;
+                JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
                 comboBoxFacturas.addItem("Factura con id: " + Integer.parseInt(facturaAgregar));
                 limpiarUIFact();
             }
@@ -272,13 +295,14 @@ public class ABInventario extends JFrame {
                    arbolDetalles.insertar(newFactura, Integer.parseInt(detalle), newProducto, Integer.parseInt(cantidad), Integer.parseInt(price));
                 }
                 else return;
+                JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
                 limpiarUIDetalle();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
             }
         }
-        JOptionPane.showMessageDialog(null, "Registro creado con exito", "Aviso", 1);
+
     }
 
     public void editarRegistro(){
@@ -295,6 +319,7 @@ public class ABInventario extends JFrame {
                 String marcaEditar = marcaId.getText();
                 String eliminarComboMarca = arbolMarcas.buscar(Integer.parseInt(marcaEditar));
                 eliminarFromCombo(comboBoxMarcas,eliminarComboMarca);
+                eliminarFromCombo(comboMarcasReporte,eliminarComboMarca);
                 if(codeIsNumber(marcaEditar)){
                     String searchResult;
                     searchResult = arbolMarcas.editar(newNombre, Integer.parseInt(marcaEditar));
@@ -304,6 +329,7 @@ public class ABInventario extends JFrame {
                     else{
                         JOptionPane.showMessageDialog(null, "Registro editado con exito", "Informacion", JOptionPane.INFORMATION_MESSAGE);
                         comboBoxMarcas.addItem(marcaEditar + "-" + newNombre);
+                        comboMarcasReporte.addItem(marcaEditar + "-" + newNombre);
                     }
                 }
                 else{
@@ -425,6 +451,7 @@ public class ABInventario extends JFrame {
                 String marcaEliminar = marcaId.getText();
                 String eliminarComboMarca = arbolMarcas.buscar(Integer.parseInt(marcaEliminar));
                 eliminarFromCombo(comboBoxMarcas,eliminarComboMarca);
+                eliminarFromCombo(comboMarcasReporte,eliminarComboMarca);
                 if(codeIsNumber(marcaEliminar)){
                     String searchResult;
                     searchResult = arbolMarcas.buscar(Integer.parseInt(marcaEliminar));
@@ -684,6 +711,52 @@ public class ABInventario extends JFrame {
                 comboEliminar.removeItemAt(i);
                 break;
             }
+        }
+    }
+    public void tablaFromMes(){
+        try{
+            int selectedMesIndex = comboReporteMes.getSelectedIndex();
+            // Retrieve the selected item
+            String selectedMesText = (String) comboReporteMes.getItemAt(selectedMesIndex);
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.setRowCount(0);
+            modelo.addColumn("Mes");
+            modelo.addColumn("Total ventas");
+
+            int mesEnColumna = idFromText(selectedMesText);
+            int totalMes=0;
+            LocalDate fechaFiltro = LocalDate.of(2023,mesEnColumna,7);
+            ArrayList<Integer> baseFacturas = new ArrayList<>();
+            ArrayList<Integer> facturasPorMes = arbolFacturas.imprimirEnOrden(fechaFiltro,baseFacturas);
+            for(int i=0; i<facturasPorMes.size(); i++){
+                int idToDetalle = facturasPorMes.get(i);
+                totalMes=totalMes+arbolDetalles.buscarPrecio(idToDetalle);
+            }
+            modelo.addRow(new Object[]{mesEnColumna, totalMes});
+            tablaPorMes.setModel(modelo);
+        }catch (NullPointerException npe){
+            JOptionPane.showMessageDialog(null, "Usuario: El mes que esta tratando visualizar no tiene ventas aún", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
+        }
+
+    }
+    public void tablaFromMarca(){
+        try{
+            int selectedMarcaIndex = comboMarcasReporte.getSelectedIndex();
+            // Retrieve the selected item
+            String selectedMarcaText = (String) comboMarcasReporte.getItemAt(selectedMarcaIndex);
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.setRowCount(0);
+            modelo.addColumn("Producto");
+            int marcaAsInt = idFromText(selectedMarcaText);
+            ArrayList<String> baseProductos = new ArrayList<>();
+            ArrayList<String> productosConMarca = arbolProductos.imprimirEnOrdenByMarca(marcaAsInt,baseProductos);
+            for(int i=0; i<productosConMarca.size(); i++){
+                String textToTabla = productosConMarca.get(i);
+                modelo.addRow(new Object[]{textToTabla});
+            }
+            tablePorMarca.setModel(modelo);
+        }catch (NullPointerException npe) {
+            JOptionPane.showMessageDialog(null, "Usuario: La marca que esta tratando visualizar no tiene productos aún", "Advertencia", JOptionPane.OK_CANCEL_OPTION);
         }
     }
 }
