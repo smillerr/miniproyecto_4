@@ -4,28 +4,28 @@ import Nodos.NodoDetalle;
 
 import javax.swing.*;
 
+/**
+ * Esta clase representa un Árbol Binario de Detalles de Facturas.
+ */
 public class ABDetalle {
     NodoDetalle raiz;
-
+    /**
+     * Crea un nuevo Árbol Binario de Detalles de Facturas.
+     */
     public ABDetalle() {
         raiz = null;
     }
+    /**
+     * Inserta un nuevo detalle de factura en el árbol.
+     */
 
     public void insertar(int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         raiz = insertarRecursivo(raiz, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
     }
+
     /**
-     * El metodo insertar recursivo tiene como parametros el nodo a instertar, el id de la factura, el id del detalle de la factura, la cantidad de productos, el valor de cada producto
-     *
-     * Tiene 4 posibles casos:
-     *
-     * 1) En caso tal de que el nodo sea el primero en agregar, lo pone como la raiz del arbol
-     * 2) En caso de que se intente agregar un nodo que ya exista, ya que el id es unico, se retorna el nodo que se habia creado con ese id, es decir, el nodo antiguo
-     * 3) En caso tal de que el id sea menor al que ya está, entonces se añade como el hijo izquierdo
-     * 4) En caso tal de que el id sea mayor al que ya está, se añade como el hijo derecho
-     *
-     * Esto para asegurar que no se pueda insertar un detalle de factura con un id que ya exista, es decir, se asegura la exclusividad
-     * **/
+     * Inserta un nuevo detalle de factura de forma recursiva.
+     */
     private NodoDetalle insertarRecursivo(NodoDetalle nodo, int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         if (nodo == null) {
             nodo = new NodoDetalle(idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
@@ -43,11 +43,17 @@ public class ABDetalle {
 
         return nodo;
     }
+    /**
+     * Busca un detalle de factura por su ID.
+     */
 
     public String buscar(int idDetalle) {
 
         return buscarRecursivo(raiz, idDetalle);
     }
+    /**
+     * Busca un detalle de factura de forma recursiva.
+     */
 
     private String buscarRecursivo(NodoDetalle nodo, int idDetalle) {
         if (nodo == null) {
@@ -63,11 +69,17 @@ public class ABDetalle {
             return buscarRecursivo(nodo.hijoDerecho, idDetalle);
         }
     }
+    /**
+     * Busca el precio total de una factura por su ID.
+     */
 
     public int buscarPrecio(int idFactura) {
 
         return buscarPrecioRecursivo(raiz, idFactura);
     }
+    /**
+     * Busca el precio total de una factura de forma recursiva.
+     */
 
     private int buscarPrecioRecursivo(NodoDetalle nodo, int idFactura) {
         if (nodo == null) {
@@ -82,10 +94,16 @@ public class ABDetalle {
             return buscarPrecioRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    /**
+     * Busca un detalle de factura por el ID de la factura.
+     */
     public NodoDetalle buscarDetallePorFactura(int idFactura) {
 
         return buscarDetallePorFacturaRecursivo(raiz, idFactura);
     }
+    /**
+     * Busca un detalle de factura por el ID de la factura de forma recursiva.
+     */
 
     private NodoDetalle buscarDetallePorFacturaRecursivo(NodoDetalle nodo, int idFactura) {
         if (nodo == null) {
@@ -101,6 +119,9 @@ public class ABDetalle {
             return buscarDetallePorFacturaRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    /**
+     * Edita un detalle de factura.
+     */
     public String editar(int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         raiz = editarRecursivo(raiz, idFactura, idDetalle, idProducto, cantidadProductos, valorProducto);
         String buscarNodo = buscar(idDetalle);
@@ -109,6 +130,9 @@ public class ABDetalle {
         else
             return buscarNodo;
     }
+    /**
+     * Edita un detalle de factura de forma recursiva.
+     */
 
     private NodoDetalle editarRecursivo(NodoDetalle nodo, int idFactura, int idDetalle, int idProducto, int cantidadProductos, int valorProducto) {
         if (nodo == null) {
@@ -129,6 +153,9 @@ public class ABDetalle {
 
         return nodo;
     }
+    /**
+     * Elimina un detalle de factura.
+     */
 
     public String eliminar(int idDetalle) {
         String buscarNodo = buscar(idDetalle);
@@ -138,6 +165,9 @@ public class ABDetalle {
         else
             return buscarNodo;
     }
+    /**
+     * Elimina un detalle de factura de forma recursiva.
+     */
 
     private NodoDetalle eliminarRecursivo(NodoDetalle nodo, int idDetalle) {
         if (nodo == null) {
@@ -172,6 +202,10 @@ public class ABDetalle {
 
         return nodo;
     }
+    /**
+     * Encuentra el sucesor de un nodo en el árbol.
+     */
+
 
     private NodoDetalle encontrarSucesor(NodoDetalle nodo) {
         while (nodo.hijoIzquierdo != null) {

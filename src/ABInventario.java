@@ -15,6 +15,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.regex.*;
 
+/**
+ * La clase ABInventario es una interfaz gráfica de usuario (GUI) para un sistema de inventario.
+ * Permite gestionar marcas, productos, facturas y detalles de facturas.
+ */
 public class ABInventario extends JFrame {
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
@@ -89,6 +93,10 @@ public class ABInventario extends JFrame {
     private JTable tablePorFacturasMayo;
     private JScrollPane tablaPorMarca;
 
+    /**
+     * Constructor de la clase ABInventario.
+     * Inicializa los componentes de la interfaz gráfica y crea instancias de los árboles de datos.
+     */
     public ABInventario() {
         super("Inventario");
         setContentPane(panel1);
@@ -99,6 +107,7 @@ public class ABInventario extends JFrame {
         arbolFacturas = new ABFactura();
         arbolDetalles = new ABDetalle();
 
+        // Asignar oyentes de eventos a los botones y otros componentes
         agregarMarcaBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -222,8 +231,13 @@ public class ABInventario extends JFrame {
             }
         });
     }
+    /**
+     * Método privado que se ejecuta cuando se hace clic en el botón "Agregar" de cualquier panel.
+     * Agrega un nuevo registro al árbol de datos correspondiente según el panel actualmente visible.
+     */
 
     public void agregarRegistro(){
+        // Lógica para agregar un nuevo registro al árbol de datos
         marcaTextArea.setText("");
         productoTextArea.setText("");
         facturaTextArea.setText("");
@@ -328,8 +342,13 @@ public class ABInventario extends JFrame {
         }
 
     }
+    /**
+     * Método privado que se ejecuta cuando se hace clic en el botón "Editar" de cualquier panel.
+     * Edita el registro seleccionado en el árbol de datos correspondiente según el panel actualmente visible.
+     */
 
     public void editarRegistro(){
+        // Lógica para editar un registro en el árbol de datos
         marcaTextArea.setText("");
         productoTextArea.setText("");
         facturaTextArea.setText("");
@@ -464,7 +483,12 @@ public class ABInventario extends JFrame {
             }
         }
     }
+    /**
+     * Método privado que se ejecuta cuando se hace clic en el botón "Eliminar" de cualquier panel.
+     * Elimina el registro seleccionado del árbol de datos correspondiente según el panel actualmente visible.
+     */
     public void eliminarRegistro(){
+        // Lógica para eliminar un registro del árbol de datos
         marcaTextArea.setText("");
         productoTextArea.setText("");
         facturaTextArea.setText("");
@@ -568,7 +592,12 @@ public class ABInventario extends JFrame {
             }
         }
     }
+    /**
+     * Método privado que se ejecuta cuando se hace clic en el botón "Buscar" de cualquier panel.
+     * Realiza una búsqueda en el árbol de datos correspondiente según el panel actualmente visible.
+     */
     public void buscarRegistro(){
+        // Lógica para realizar una búsqueda en el árbol de datos
         marcaTextArea.setText("");
         productoTextArea.setText("");
         facturaTextArea.setText("");
@@ -664,16 +693,28 @@ public class ABInventario extends JFrame {
             }
         }
     }
+    /**
+     * Limpia los campos de la interfaz de usuario relacionados con la marca.
+     */
     public void limpiarUIMarca(){
+        // Código para limpiar la interfaz de usuario de la marca
         marcaNombre.setText("");
         marcaId.setText("");
     }
+    /**
+     * Limpia los campos de la interfaz de usuario relacionados con el producto.
+     */
     public void limpiarUIProd(){
+        // Código para limpiar la interfaz de usuario del producto
         descProducto.setText("");
         productoId.setText("");
         comboBoxMarcas.setSelectedIndex(0);
     }
+    /**
+     * Limpia los campos de la interfaz de usuario relacionados con la factura.
+     */
     public void limpiarUIFact(){
+        // Código para limpiar la interfaz de usuario de la factura
         facturaId.setText("");
         mesComboBox.setSelectedIndex(0);
         diaComboBox.setSelectedIndex(0);
@@ -681,14 +722,22 @@ public class ABInventario extends JFrame {
         horaComboBox.setSelectedIndex(0);
         minutoComboBox.setSelectedIndex(0);
     }
+    /**
+     * Limpia los campos de la interfaz de usuario relacionados con el detalle.
+     */
     public void limpiarUIDetalle(){
+        // Código para limpiar la interfaz de usuario del detalle
         detalleId.setText("");
         priceText.setText("");
         undText.setText("");
         comboBoxProductos.setSelectedIndex(0);
         comboBoxFacturas.setSelectedIndex(0);
     }
+    /**
+     * Devuelve un índice correspondiente a un registro específico basado en el índice de la pestaña actual.
+     */
     public int whichRegistro(int tabActual){
+        // Código para determinar el índice del registro según la pestaña actual
         if(tabActual==marcaIndex){
             tabActual=0;
         }
@@ -703,7 +752,11 @@ public class ABInventario extends JFrame {
         }
         return tabActual;
     }
+    /**
+     * Verifica si el código especificado es un número.
+     */
     public Boolean codeIsNumber(String code){
+        // Código para verificar si el código es un número
         try {
             Integer.parseInt(code);
         }
@@ -713,7 +766,11 @@ public class ABInventario extends JFrame {
         }
         return true;
     }
+    /**
+     * Extrae el identificador de un texto dado.
+     */
     public int idFromText(String text){
+        // Código para extraer el identificador del texto
         int id=0;
         // Define the regular expression pattern to match digits
         String pattern = "\\d+";
@@ -731,7 +788,11 @@ public class ABInventario extends JFrame {
         }
         return id;
     }
+    /**
+     * Elimina un elemento específico de un JComboBox.
+     */
     public void eliminarFromCombo(JComboBox comboEliminar, String itemEliminar){
+        // Código para eliminar un elemento del JComboBox
         int itemCount = comboEliminar.getItemCount();
         for (int i = 0; i < itemCount; i++) {
             if (comboEliminar.getItemAt(i).equals(itemEliminar)) {
@@ -740,7 +801,11 @@ public class ABInventario extends JFrame {
             }
         }
     }
+    /**
+     * Genera una tabla de informe basada en el mes seleccionado.
+     */
     public void tablaFromMes(){
+        // Código para generar una tabla de informe basada en el mes seleccionado
         DefaultTableModel modelo = new DefaultTableModel();
         try{
             int selectedMesIndex = comboReporteMes.getSelectedIndex();
@@ -768,7 +833,11 @@ public class ABInventario extends JFrame {
         }
 
     }
+    /**
+     * Genera una tabla de informe basada en la marca seleccionada.
+     */
     public void tablaFromMarca(){
+        // Código para generar una tabla de informe basada en la marca seleccionada
         DefaultTableModel modelo = new DefaultTableModel();
         try{
             int selectedMarcaIndex = comboMarcasReporte.getSelectedIndex();
@@ -789,7 +858,11 @@ public class ABInventario extends JFrame {
             modelo.setRowCount(0);
         }
     }
+    /**
+     * Genera una tabla de informe basada en la factura seleccionada.
+     */
     public void tablaFromFactura(){
+        // Código para generar una tabla de informe basada en la factura seleccionada
         DefaultTableModel modelo = new DefaultTableModel();
         try{
             int selectedFacturaIndex = comboBoxReporteFactura.getSelectedIndex();
@@ -815,6 +888,9 @@ public class ABInventario extends JFrame {
             modelo.setRowCount(0);
         }
     }
+    /**
+     * Genera una tabla de informe de las facturas del mes de mayo.
+     */
     public void tablaFacturasMayo(){
         DefaultTableModel modelo = new DefaultTableModel();
         try{
