@@ -5,7 +5,10 @@ import Arboles.ABProducto;
 import Nodos.NodoDetalle;
 import Nodos.NodoFactura;
 import Nodos.NodoProducto;
+import TreeMapValues.Detalle;
+import TreeMapValues.Factura;
 import TreeMapValues.Marca;
+import TreeMapValues.Producto;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -96,6 +99,9 @@ public class ABInventario extends JFrame {
     private JScrollPane tablaPorMarca;
     // TreeMap<Key,Value>
     private TreeMap<Integer, Marca> treeMapMarcas;
+    private TreeMap<Integer, Producto> treeMapProducto;
+    private TreeMap<Integer, Factura> treeMapFactura;
+    private TreeMap<Integer, Detalle> treeMapDetalle;
 
     /**
      * Constructor de la clase ABInventario.
@@ -110,8 +116,13 @@ public class ABInventario extends JFrame {
         treeMapMarcas = new TreeMap<>();
 
         arbolProductos = new ABProducto();
+        treeMapProducto = new TreeMap<>();
+
         arbolFacturas = new ABFactura();
+        treeMapFactura = new TreeMap<>();
+
         arbolDetalles = new ABDetalle();
+        treeMapDetalle = new TreeMap<>();
 
         // Asignar oyentes de eventos a los botones y otros componentes
         agregarMarcaBtn.addActionListener(new ActionListener() {
