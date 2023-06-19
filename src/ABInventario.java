@@ -5,6 +5,7 @@ import Arboles.ABProducto;
 import Nodos.NodoDetalle;
 import Nodos.NodoFactura;
 import Nodos.NodoProducto;
+import TreeMapValues.Marca;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.regex.*;
 
 public class ABInventario extends JFrame {
@@ -88,6 +90,8 @@ public class ABInventario extends JFrame {
     private JButton mostrarFacturasDelMesButton;
     private JTable tablePorFacturasMayo;
     private JScrollPane tablaPorMarca;
+    // TreeMap<Key,Value>
+    private TreeMap<Integer, Marca> treeMapMarcas;
 
     public ABInventario() {
         super("Inventario");
@@ -95,6 +99,8 @@ public class ABInventario extends JFrame {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         arbolMarcas = new ABMarca();
+        treeMapMarcas = new TreeMap<>();
+
         arbolProductos = new ABProducto();
         arbolFacturas = new ABFactura();
         arbolDetalles = new ABDetalle();
@@ -235,6 +241,7 @@ public class ABInventario extends JFrame {
                 String nombreAgregar = marcaNombre.getText();
                 String marcaAgregar = marcaId.getText();
                 if(codeIsNumber(marcaAgregar)){
+                    treeMapMarcas.put(Integer.parseInt(marcaAgregar) , new Marca(nombreAgregar, Integer.parseInt(marcaAgregar)));
                     arbolMarcas.insertar(nombreAgregar, Integer.parseInt(marcaAgregar));
                 }
                 else{
@@ -702,7 +709,7 @@ public class ABInventario extends JFrame {
             tabActual=3;
         }
         return tabActual;
-    }
+    }//Key value: key id, <Integer, Factura>
     public Boolean codeIsNumber(String code){
         try {
             Integer.parseInt(code);
