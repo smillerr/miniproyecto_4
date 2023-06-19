@@ -227,19 +227,19 @@ public class ABDetalle {
         }
     }
 
-    public int tamaño() {
-        return tamañoRecursivo(raiz);
+    public int tamanio() {
+        return tamanioRecursivo(raiz);
     }
 
-    private int tamañoRecursivo(NodoDetalle nodo) {
+    private int tamanioRecursivo(NodoDetalle nodo) {
         if (nodo == null) {
             return 0;
         }
 
-        int tamañoIzquierdo = tamañoRecursivo(nodo.hijoIzquierdo);
-        int tamañoDerecho = tamañoRecursivo(nodo.hijoDerecho);
+        int tamanioIzquierdo = tamanioRecursivo(nodo.hijoIzquierdo);
+        int tamanioDerecho = tamanioRecursivo(nodo.hijoDerecho);
 
-        return tamañoIzquierdo + tamañoDerecho + 1;
+        return tamanioIzquierdo + tamanioDerecho + 1;
     }
 
     public boolean estaVacio() {

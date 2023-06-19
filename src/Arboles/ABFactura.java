@@ -214,21 +214,21 @@ public class ABFactura {
         return null;
     }
     /**
-     * Calcula el tamaño del árbol.
+     * Calcula el tamanio del árbol.
      */
-    public int tamaño() {
-        return tamañoRecursivo(raiz);
+    public int tamanio() {
+        return tamanioRecursivo(raiz);
     }
 
-    private int tamañoRecursivo(NodoFactura nodo) {
+    private int tamanioRecursivo(NodoFactura nodo) {
         if (nodo == null) {
             return 0;
         }
 
-        int tamañoIzquierdo = tamañoRecursivo(nodo.hijoIzquierdo);
-        int tamañoDerecho = tamañoRecursivo(nodo.hijoDerecho);
+        int tamanioIzquierdo = tamanioRecursivo(nodo.hijoIzquierdo);
+        int tamanioDerecho = tamanioRecursivo(nodo.hijoDerecho);
 
-        return tamañoIzquierdo + tamañoDerecho + 1;
+        return tamanioIzquierdo + tamanioDerecho + 1;
     }
     /**
      * Verifica si el árbol está vacío.

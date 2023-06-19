@@ -734,10 +734,10 @@ public class ABInventario extends JFrame {
         comboBoxFacturas.setSelectedIndex(0);
     }
     /**
-     * Devuelve un índice correspondiente a un registro específico basado en el índice de la pestaña actual.
+     * Devuelve un índice correspondiente a un registro específico basado en el índice de la pestania actual.
      */
     public int whichRegistro(int tabActual){
-        // Código para determinar el índice del registro según la pestaña actual
+        // Código para determinar el índice del registro según la pestania actual
         if(tabActual==marcaIndex){
             tabActual=0;
         }
