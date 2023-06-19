@@ -7,13 +7,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * Clase que representa un Árbol Binario de Facturas.
+ */
 public class ABFactura {
     NodoFactura raiz;
 
+    /**
+     * Constructor de la clase ABFactura.
+     * Inicializa la raíz del árbol como null.
+     */
     public ABFactura() {
         raiz = null;
     }
 
+    /**
+     * Inserta una nueva factura en el árbol.
+     */
     public void insertar(int idFactura, LocalDate fechaFactura, LocalTime horaFactura) {
         raiz = insertarRecursivo(raiz, idFactura, fechaFactura, horaFactura);
     }
@@ -35,6 +45,9 @@ public class ABFactura {
 
         return nodo;
     }
+    /**
+     * Busca una factura en el árbol por su ID.
+     */
 
     public String buscar(int idFactura) {
 
@@ -55,11 +68,17 @@ public class ABFactura {
             return buscarRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    /**
+     * Busca una factura en el árbol por su ID y devuelve información detallada.
+     */
 
     public String buscarDetallado(int idFactura) {
 
         return buscarDetalladoRecursivo(raiz, idFactura);
     }
+    /**
+     * Busca una factura en el árbol por su ID y devuelve información detallada.
+     */
 
     private String buscarDetalladoRecursivo(NodoFactura nodo, int idFactura) {
         if (nodo == null) {
@@ -74,6 +93,9 @@ public class ABFactura {
             return buscarDetalladoRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    /**
+     * Busca una factura en el árbol por su ID y devuelve el nodo de la factura.
+     */
 
     public NodoFactura buscaFactura(int idFactura) {
 
@@ -93,6 +115,9 @@ public class ABFactura {
             return buscarFacturaRecursivo(nodo.hijoDerecho, idFactura);
         }
     }
+    /**
+     * Edita los datos de una factura en el árbol.
+     */
 
     public String editar(int idFactura, LocalDate fechaFactura, LocalTime horaFactura) {
         raiz = editarRecursivo(raiz, idFactura, fechaFactura, horaFactura);
@@ -119,6 +144,9 @@ public class ABFactura {
 
         return nodo;
     }
+    /**
+     * Elimina una factura del árbol por su ID.
+     */
 
     public String eliminar(int idFactura) {
         String buscarNodo = buscar(idFactura);
@@ -167,6 +195,9 @@ public class ABFactura {
         }
         return nodo;
     }
+    /**
+     * Imprime en orden las facturas cuya fecha corresponda al mes especificado.
+     */
 
     public ArrayList<Integer> imprimirEnOrden(LocalDate fechaDeseada, ArrayList<Integer> fechasPorMes) {
         ArrayList<Integer> resultadoMes = imprimirEnOrdenRecursivo(raiz, fechaDeseada, fechasPorMes);
@@ -182,8 +213,9 @@ public class ABFactura {
         }
         return null;
     }
-
-
+    /**
+     * Calcula el tamaño del árbol.
+     */
     public int tamaño() {
         return tamañoRecursivo(raiz);
     }
@@ -198,6 +230,9 @@ public class ABFactura {
 
         return tamañoIzquierdo + tamañoDerecho + 1;
     }
+    /**
+     * Verifica si el árbol está vacío.
+     */
 
     public boolean estaVacio() {
         return raiz == null;

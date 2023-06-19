@@ -5,14 +5,29 @@ import Nodos.NodoMarca;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Clase que representa un árbol binario para gestionar marcas.
+ */
 public class ABMarca {
+    /**
+     * Raíz del árbol.
+     */
     NodoMarca raiz;
+    /**
+     * Área de texto para imprimir resultados.
+     */
     JTextArea ta;
+    /**
+     * Constructor de la clase ABMarca.
+     */
 
     public ABMarca() {
         raiz = null;
     }
 
+    /**
+     * Inserta una nueva marca en el árbol.
+     */
     public void insertar(String nombreMarca, int idMarca) {
         raiz = insertarRecursivo(raiz, nombreMarca, idMarca);
     }
@@ -35,6 +50,9 @@ public class ABMarca {
         return nodo;
     }
 
+    /**
+     * Busca una marca en el árbol por su ID.
+     */
     public String buscar(int idMarca) {
 
         return buscarRecursivo(raiz, idMarca);
@@ -54,6 +72,10 @@ public class ABMarca {
             return buscarRecursivo(nodo.hijoDerecho, idMarca);
         }
     }
+
+    /**
+     * Busca una marca en el árbol por su ID y devuelve una descripción detallada.
+     */
     public String buscarDetallado(int idMarca) {
 
         return buscarDetalladoRecursivo(raiz, idMarca);
@@ -73,6 +95,9 @@ public class ABMarca {
             return buscarDetalladoRecursivo(nodo.hijoDerecho, idMarca);
         }
     }
+    /**
+     * Edita el nombre de una marca en el árbol.
+     */
 
     public String editar(String nombreMarca, int idMarca) {
         raiz = editarRecursivo(raiz, nombreMarca, idMarca);
@@ -98,6 +123,9 @@ public class ABMarca {
 
         return nodo;
     }
+    /**
+     * Elimina una marca del árbol por su ID.
+     */
 
     public String eliminar(int idMarca) {
         String buscarNodo = buscar(idMarca);
@@ -145,6 +173,9 @@ public class ABMarca {
         }
         return nodo;
     }
+    /**
+     * Imprime las marcas del árbol en orden.
+     */
 
     public void imprimirEnOrden(JTextArea ta) {
         this.ta = ta;
@@ -158,6 +189,9 @@ public class ABMarca {
             imprimirEnOrdenRecursivo(nodo.hijoDerecho);
         }
     }
+    /**
+     * Obtiene el tamaño del árbol (número de marcas).
+     */
 
     public int tamaño() {
         return tamañoRecursivo(raiz);
@@ -173,6 +207,9 @@ public class ABMarca {
 
         return tamañoIzquierdo + tamañoDerecho + 1;
     }
+    /**
+     * Verifica si el árbol está vacío.
+     */
 
     public boolean estaVacio() {
         return raiz == null;
